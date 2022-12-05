@@ -1,0 +1,22 @@
+{
+    "name": "denisok94/symfony-helper",
+    "description": "Symfony helper",
+    "keywords": ["symfony helper"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Denisok94",
+            "email": "denisok94@inbox.ru"
+        }
+    ],
+    "version": "0.0.0",
+    "require": {
+        "denisok94/helper": ">=0.8.0|dev-develop"
+    },
+    "autoload": {
+        "psr-4": {
+            "Denisok94\\SymfonyHelper\\": "src/"
+        }
+    }
+}
