@@ -10,9 +10,11 @@
             "email": "denisok94@inbox.ru"
         }
     ],
-    "version": "0.0.0",
+    "version": "0.0.1",
     "require": {
-        "denisok94/helper": ">=0.8.0|dev-develop"
+        "denisok94/helper": ">=0.8.0|dev-develop",
+        "jms/serializer-bundle": "*",
+        "mashape/unirest-php": "^3.0"
     },
     "autoload": {
         "psr-4": {

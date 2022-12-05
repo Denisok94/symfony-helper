@@ -2,8 +2,38 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: true
+        public: false
+        bind:
+            # $validationErrorsArgument: 'validationErrors'
 
     Denisok94\SymfonyHelper\:
         resource: '../../*'
-        exclude: '../../{DependencyInjection,Resources}'
+        exclude: '../../{DependencyInjection,Controller,HttpClient,Service,Resources}'
+
+    denisok94.service.api_rest:
+        class: Denisok94\SymfonyHelper\Service\ApiRestService
+        arguments:
+            $logger: '@monolog.logger.portal'
+        calls:
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - 'container.service_subscriber'
+
+    denisok94.controller.api_rest_controller:
+        # abstract: true
+        class: Denisok94\SymfonyHelper\Controller\ApiRestController
+        calls:
+            - [setApiRestService, ['@denisok94.service.api_rest']]
+        tags:
+            - 'controller.service_arguments'
+
+    Denisok94\SymfonyHelper\Service\Cache:
+        public: true
+        arguments:
+            $directory: '%kernel.project_dir%/var/cache/'
+            $logger: '@monolog.logger.cache'
+
+    Denisok94\SymfonyHelper\Service\JsonConverter:
+        public: true
+        arguments:
+            $serializerNamingStrategy: '@jms_serializer.naming_strategy'
