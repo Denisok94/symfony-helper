@@ -132,7 +132,11 @@ abstract class ApiRestController extends AbstractController
         $this->data = H::toArray($this->requestStack->getContent());
         // если заданы ограничения
         if ($accessControl = $this->accessControl()) {
+            if ($error = $this->preAccessControl($accessControl)) return $error;
             foreach ($accessControl as $rules) {
+                if (is_array($rules)) {
+                    if ($error = $this->preAccessControlItem($rules)) return $error;
+                }
                 if (isset($rules['actions'])) {
                     // найти настройки action
                     if (in_array($this->actionName, $rules['actions'])) {
@@ -200,6 +204,26 @@ abstract class ApiRestController extends AbstractController
     public function accessControl()
     {
         return null;
+    }
+
+    /**
+     * Предварительная проверка доступа
+     * @param array $accessControl - весть массив из accessControl()
+     * @return JsonResponse|bool
+     */
+    public function preAccessControl(array $accessControl): JsonResponse|bool
+    {
+        return false;
+    }
+
+    /**
+     * Индивидуальная проверка доступа
+     * @param array $item - элемент массива из accessControl()
+     * @return JsonResponse|bool
+     */
+    public function preAccessControlItem(array $item): JsonResponse|bool
+    {
+        return false;
     }
 
     /**
