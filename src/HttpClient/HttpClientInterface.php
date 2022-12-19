@@ -34,7 +34,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function post(string $endpoint, $data, array $headers = []) : Response;
+    public function post(string $endpoint, $data, array $headers = []): Response;
 
     /**
      * @param string $endpoint
@@ -42,7 +42,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function postJson(string $endpoint, string $json, array $headers = []) : Response;
+    public function postJson(string $endpoint, string $json, array $headers = []): Response;
 
     /**
      * @param string $endpoint
@@ -50,7 +50,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function get(string $endpoint, array $parameters = [], array $headers = []) : Response;
+    public function get(string $endpoint, array $parameters = [], array $headers = []): Response;
 
     /**
      * @param string $endpoint
@@ -58,7 +58,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function getJson(string $endpoint, array $parameters = [], array $headers = []) : Response;
+    public function getJson(string $endpoint, array $parameters = [], array $headers = []): Response;
 
     /**
      * @param string $endpoint
@@ -66,7 +66,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function delete(string $endpoint, $data = null, array $headers = []) : Response;
+    public function delete(string $endpoint, $data = null, array $headers = []): Response;
 
     /**
      * @param string $endpoint
@@ -74,7 +74,7 @@ interface HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function deleteJson(string $endpoint, string $json = null, array $headers = []) : Response;
+    public function deleteJson(string $endpoint, string $json = null, array $headers = []): Response;
 
     /**
      * @param string $endpoint

@@ -25,7 +25,6 @@ class AccessDeniedHandler implements AccessDeniedHandlerInterface
     public function handle(Request $request, AccessDeniedException $accessDeniedException): ?JsonResponse
     {
         // ...
-
         return new JsonResponse(['code' => 403, 'message' => 'Access Denied'], 403);
     }
 }

@@ -21,7 +21,7 @@ class JsonErrorController
     public function show(Throwable $exception, LoggerInterface $logger): JsonResponse
     {
         $e = $exception;
-        $logger->critical(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()));
+        $logger->critical(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
         $code = $e->getCode() >= 200 ? $e->getCode() : 400;
         return new JsonResponse(["error" => [
             'code' => $e->getCode(),

@@ -19,12 +19,10 @@ class Helper extends BaseHelper
     public static function isJsonRequest(Request $request): bool
     {
         $acceptHeader = AcceptHeader::fromString($request->headers->get('Accept'));
-        if (!$acceptHeader->has('application/json'))
-        {
+        if (!$acceptHeader->has('application/json')) {
             $contentHeader = AcceptHeader::fromString($request->headers->get('Content-Type'));
             return $contentHeader->has('application/json');
         }
         return true;
     }
-
 }

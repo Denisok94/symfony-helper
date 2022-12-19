@@ -35,7 +35,6 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  * ```
  * @link https://symfony.com/doc/current/components/cache.html
  * @link https://symfony.com/doc/current/components/cache/cache_pools.html
- * @author Name <email@email.com>
  * @package Denisok94\SymfonyHelper\Component
  */
 class Cache
@@ -73,6 +72,9 @@ class Cache
         if ($this->logger) {
             $this->cache->setLogger($this->logger);
         }
+        if ($defaultLifetime > 0) {
+            $this->cache->prune(); // очистить от устаревшего кеша
+        }
         return $this->cache;
     }
 
@@ -94,6 +96,9 @@ class Cache
         if ($redisConnection) {
             $client = RedisAdapter::createConnection($redisConnection, $options);
             $this->cache = new RedisAdapter($client, $namespace, $defaultLifetime);
+            if ($this->logger) {
+                $this->cache->setLogger($this->logger);
+            }
             return $this->cache;
         }
     }

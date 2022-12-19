@@ -34,7 +34,7 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function postJson(string $endpoint, string $json, array $headers = []) : Response
+    public function postJson(string $endpoint, string $json, array $headers = []): Response
     {
         $headers = array_merge([
             'Accept' => 'application/json',
@@ -46,7 +46,7 @@ class HttpClient implements HttpClientInterface
             $this->logger->info($json);
         }
 
-        $response = Request::post( $this->apiUrl . $endpoint, $headers, $json);
+        $response = Request::post($this->apiUrl . $endpoint, $headers, $json);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
@@ -60,14 +60,14 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function post(string $endpoint, $data, array $headers = []) : Response
+    public function post(string $endpoint, $data, array $headers = []): Response
     {
         if ($this->logger) {
             $this->logger->info('POST: ' . $this->apiUrl . $endpoint);
             $this->logger->info(print_r($data, true));
         }
 
-        $response = Request::post( $this->apiUrl . $endpoint, $headers, $data);
+        $response = Request::post($this->apiUrl . $endpoint, $headers, $data);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
@@ -81,7 +81,7 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function putJson(string $endpoint, string $json, array $headers = []) : Response
+    public function putJson(string $endpoint, string $json, array $headers = []): Response
     {
         $headers = array_merge([
             'Accept' => 'application/json',
@@ -93,7 +93,7 @@ class HttpClient implements HttpClientInterface
             $this->logger->info($json);
         }
 
-        $response = Request::put( $this->apiUrl . $endpoint, $headers, $json);
+        $response = Request::put($this->apiUrl . $endpoint, $headers, $json);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
@@ -107,14 +107,14 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function put(string $endpoint, $data, array $headers = []) : Response
+    public function put(string $endpoint, $data, array $headers = []): Response
     {
         if ($this->logger) {
             $this->logger->info('PUT: ' . $this->apiUrl . $endpoint);
             $this->logger->info(print_r($data, true));
         }
 
-        $response = Request::put( $this->apiUrl . $endpoint, $headers, $data);
+        $response = Request::put($this->apiUrl . $endpoint, $headers, $data);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
@@ -225,7 +225,7 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function patchJson(string $endpoint, string $json = null, array $headers = []) : Response
+    public function patchJson(string $endpoint, string $json = null, array $headers = []): Response
     {
         $headers = array_merge([
             'Accept' => 'application/json',
@@ -237,7 +237,7 @@ class HttpClient implements HttpClientInterface
             $this->logger->info($json);
         }
 
-        $response = Request::patch( $this->apiUrl . $endpoint, $headers, $json);
+        $response = Request::patch($this->apiUrl . $endpoint, $headers, $json);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
@@ -251,14 +251,14 @@ class HttpClient implements HttpClientInterface
      * @param array $headers
      * @return Response
      */
-    public function patch(string $endpoint, $data = null, array $headers = []) : Response
+    public function patch(string $endpoint, $data = null, array $headers = []): Response
     {
         if ($this->logger) {
             $this->logger->info('PATCH: ' . $this->apiUrl . $endpoint);
             $this->logger->info(print_r($data, true));
         }
 
-        $response = Request::patch( $this->apiUrl . $endpoint, $headers, $data);
+        $response = Request::patch($this->apiUrl . $endpoint, $headers, $data);
         if ($this->logger) {
             $this->logger->info(print_r($response, true));
         }
