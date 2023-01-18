@@ -33,7 +33,7 @@ return [
 Унаследовать настройки родительского контроллера
 ```yaml
 # ~config/services.yaml
-    # global if all controller extends ApiRestController\ApiListController
+    # global if all controller extends ApiRestController or ApiListController
     App\Controller\:
         parent: 'denisok94.controller.api_rest_controller'
     # or individual 
