@@ -6,7 +6,7 @@ use Denisok94\SymfonyHelper\Components\Helper as H;
 use Denisok94\SymfonyHelper\Service\ApiRestService;
 use Denisok94\SymfonyHelper\Service\JsonConverter;
 
-use Exception;
+use Throwable;
 use Psr\Log\LoggerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,6 +82,8 @@ abstract class ApiRestController extends AbstractController
     protected $eventDispatcher;
     protected $actionName;
     protected $controllerName;
+    protected $defaultLocale;
+    protected $currentLocale;
 
     /**
      * ApiRestController constructor.
@@ -340,9 +342,9 @@ abstract class ApiRestController extends AbstractController
 
     /**
      * Запись в лог
-     * @param Exception $e
+     * @param Throwable $e
      */
-    public function critical(Exception $e): void
+    public function critical(Throwable $e): void
     {
         if ($this->logger) {
             $this->logger->critical($this->textLogger(
@@ -408,7 +410,7 @@ abstract class ApiRestController extends AbstractController
     {
         try {
             return JsonResponse::fromJsonString($this->jsonConverter->toJson($object, $groups), $code);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             return $this->buildInternalServerError($e);
         }
     }
@@ -471,10 +473,10 @@ abstract class ApiRestController extends AbstractController
 
     /**
      * 500
-     * @param Exception $e
+     * @param Throwable $e
      * @return JsonResponse
      */
-    protected function buildInternalServerError(Exception $e): JsonResponse
+    protected function buildInternalServerError(Throwable $e): JsonResponse
     {
         $this->critical($e);
         return new JsonResponse(["error" => [
