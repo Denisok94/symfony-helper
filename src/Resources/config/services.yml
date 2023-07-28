@@ -19,6 +19,14 @@ services:
         tags:
             - "container.service_subscriber"
 
+    denisok94.service.command:
+        class: Denisok94\SymfonyHelper\Service\Command
+        calls:
+            - [setLogger, ["@monolog.logger.portal"]]
+            - [setContainer, ['@Psr\Container\ContainerInterface']]
+        tags:
+            - "container.service_subscriber"
+
     denisok94.controller.api_rest_controller:
         # abstract: true
         class: Denisok94\SymfonyHelper\Controller\ApiRestController
