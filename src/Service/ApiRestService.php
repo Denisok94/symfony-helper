@@ -25,6 +25,10 @@ class ApiRestService implements ServiceSubscriberInterface
     protected $container;
     /** @var EventDispatcherInterface */
     protected $eventDispatcher;
+    /** @var Request */
+    protected $request;
+    /** @var TranslatorInterface */
+    protected $translator;
 
     /**
      * @param JsonConverter $jsonConverter
@@ -41,7 +45,7 @@ class ApiRestService implements ServiceSubscriberInterface
         ?LoggerInterface $logger = null
     ) {
         $this->jsonConverter = $jsonConverter;
-        $this->requestStack = $requestStack->getCurrentRequest();
+        $this->request = $requestStack->getCurrentRequest();
         $this->translator = $translator;
         $this->eventDispatcher = $eventDispatcher;
         $this->logger = $logger;
@@ -68,7 +72,7 @@ class ApiRestService implements ServiceSubscriberInterface
      */
     public function getRequest(): Request
     {
-        return $this->requestStack;
+        return $this->request;
     }
 
     /**
@@ -87,9 +91,8 @@ class ApiRestService implements ServiceSubscriberInterface
      */
     public function setContainer(ContainerInterface $container): ?ContainerInterface
     {
-        $previous = $this->container;
         $this->container = $container;
-        return $previous;
+        return $this->container;
     }
 
     /**
