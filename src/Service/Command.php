@@ -19,6 +19,8 @@ class Command implements ServiceSubscriberInterface
     protected ?ContainerInterface $container;
     protected ?LoggerInterface $logger;
     protected ?string $dir = null;
+    protected string $php = 'php';
+    protected bool $check_versions = false;
 
     /**
      * @param LoggerInterface|null $logger
@@ -68,8 +70,12 @@ class Command implements ServiceSubscriberInterface
         try {
             $this->init();
 
-            $v = explode('.', PHP_VERSION);
-            $php = 'php' . $v[0] . '.' . $v[1];
+            if ($this->isCheckVersions()) {
+                $v = explode('.', PHP_VERSION);
+                $php = 'php' . $v[0] . '.' . $v[1];
+            } else {
+                $php = $this->php;
+            }
             $dir = $this->dir;
 
             $params = is_array($params) ? implode(' ', $params) : $params;
@@ -115,5 +121,33 @@ class Command implements ServiceSubscriberInterface
         return [
             'parameter_bag' => '?' . ContainerBagInterface::class,
         ];
+    }
+
+    /**
+     * @param string $php php7.4 / php8.2
+     * @return self
+     */
+    public function setPhpVersion(string $php): self
+    {
+        $this->php = $php;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCheckVersions(): bool
+    {
+        return $this->check_versions;
+    }
+
+    /**
+     * @param bool $check_versions 
+     * @return self
+     */
+    public function setCheckVersions(bool $check_versions): self
+    {
+        $this->check_versions = $check_versions;
+        return $this;
     }
 }
