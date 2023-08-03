@@ -2,11 +2,12 @@
 
 namespace Denisok94\SymfonyHelper\Manager;
 
-use Exception;
+use Exception, Throwable;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Common\Collections\Criteria;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class BaseManager
@@ -18,6 +19,8 @@ class BaseManager
     protected $entityManager;
     /** @var string */
     protected $class; // Класс сущности
+    /** @var LoggerInterface|null */
+    protected $logger;
 
     /**
      * EventManagerManager constructor.
@@ -239,5 +242,88 @@ class BaseManager
     public function createQueryBuilder($alias, $indexBy = null): QueryBuilder
     {
         return $this->getRepository()->createQueryBuilder($alias, $indexBy);
+    }
+
+    //----------------------------------
+
+    /**
+     * Запись в лог
+     * @param string $message
+     * @param mixed $context
+     */
+    public function info(string $message, $context = null): void
+    {
+        if ($this->logger) {
+            $this->logger->info($this->textLogger($message), $this->paramLogger($context));
+        }
+    }
+
+    /**
+     * Запись в лог
+     * @param string $message
+     * @param mixed $context
+     */
+    public function error(string $message, $context = null): void
+    {
+        if ($this->logger) {
+            $this->logger->info($this->textLogger($message), $this->paramLogger($context));
+        }
+    }
+
+    /**
+     * @param string $message
+     * @return string
+     */
+    public function textLogger(string $message): string
+    {
+        return $message;
+    }
+
+    /**
+     * @return array
+     * @param mixed $context
+     */
+    public function paramLogger($context = null): array
+    {
+        return $context ? (is_array($context) ? $context : [$context]) : ([]);
+    }
+
+    /**
+     * Запись в лог
+     * @param Throwable $e
+     */
+    public function warning(Throwable $e): void
+    {
+        if ($this->logger) {
+            $this->logger->warning(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
+        }
+    }
+
+    /**
+     * Запись в лог
+     * @param Throwable $e
+     */
+    public function critical(Throwable $e): void
+    {
+        if ($this->logger) {
+            $this->logger->critical(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
+        }
+    }
+
+    /**
+     * Запись в лог
+     * @param string $level
+     * @param string $message
+     * @param mixed $context
+     */
+    public function log(string $level, string $message, $context = null): void
+    {
+        if ($this->logger) {
+            $this->logger->log(
+                $level,
+                $message,
+                $context ? (is_array($context) ? $context : [$context]) : ([])
+            );
+        }
     }
 }
