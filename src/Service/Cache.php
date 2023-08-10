@@ -42,9 +42,9 @@ class Cache
     /** @var AbstractAdapter */
     public $cache;
     /** @var string */
-    private $directory;
+    public $directory;
     /** @var LoggerInterface|null */
-    private $logger;
+    public $logger;
 
     /**
      * class Cache
@@ -82,6 +82,7 @@ class Cache
      * @param string $namespace пространство/группа
      * @param integer $defaultLifetime время жизни в секундах, 0 - всегда, пока сами не удалим
      * @param string|null $redis dns адрес 'redis://localhost'
+     * 
      * ```yaml
      * //~services.yaml
      * parameters.redis_dsn: "%env(REDIS_URL)%/3"
@@ -92,7 +93,7 @@ class Cache
      */
     public function useRedis(string $namespace = '', int $defaultLifetime = 0, ?string $redis = null, array $options = []): AbstractAdapter
     {
-        $redisConnection = $redis ?? $this->container->get('redis_dsn');
+        $redisConnection = $redis ?? $_ENV['REDIS_URL'];
         if ($redisConnection) {
             $client = RedisAdapter::createConnection($redisConnection, $options);
             $this->cache = new RedisAdapter($client, $namespace, $defaultLifetime);

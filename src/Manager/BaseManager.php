@@ -266,7 +266,7 @@ class BaseManager
     public function error(string $message, $context = null): void
     {
         if ($this->logger) {
-            $this->logger->info($this->textLogger($message), $this->paramLogger($context));
+            $this->logger->error($this->textLogger($message), $this->paramLogger($context));
         }
     }
 
@@ -295,7 +295,10 @@ class BaseManager
     public function warning(Throwable $e): void
     {
         if ($this->logger) {
-            $this->logger->warning(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
+            $this->logger->warning(
+                sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()),
+                $this->paramLogger($e->getTrace())
+            );
         }
     }
 
@@ -306,7 +309,10 @@ class BaseManager
     public function critical(Throwable $e): void
     {
         if ($this->logger) {
-            $this->logger->critical(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
+            $this->logger->critical(
+                sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()),
+                $this->paramLogger($e->getTrace())
+            );
         }
     }
 
