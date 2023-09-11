@@ -79,20 +79,18 @@ class Command implements ServiceSubscriberInterface
             $dir = $this->dir;
 
             $params = is_array($params) ? implode(' ', $params) : $params;
-            $log = "> $dir/var/log/console.log";
-
+            // $log = "> $dir/var/log/console.log";
             $syncStr = $sync ? '&' : '';
-
             // $exec = "$php $dir/bin/console $command $params $log $syncStr";
             $exec = implode(' ',  [
                 $php,
                 "$dir/bin/console",
                 $command,
                 $params,
-                $log,
+                // $log,
                 $syncStr
             ]);
-            // $this->logger?->info("exec: $exec", []);
+            $this->logger?->debug("exec: $exec", []);
 
             // $process = new Process(['php', "$dir/bin/console", $command, $params, $log, $syncStr]);
             // try {
