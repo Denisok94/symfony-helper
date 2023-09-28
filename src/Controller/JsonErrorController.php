@@ -23,9 +23,14 @@ class JsonErrorController
         $e = $exception;
         $logger->critical(sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine()), $e->getTrace());
         $code = $e->getCode() >= 200 ? $e->getCode() : 400;
+        if ($e->getCode() == 0) {
+            if (str_contains($e->getMessage(), 'No route found')) {
+                $code = 404;
+            }
+        }
         return new JsonResponse(["error" => [
-            'code' => $e->getCode(),
-            'message' => $e->getMessage()
+            'code' => $code,
+            'message' => $e->getMessage(),
         ]], $code);
     }
 }
