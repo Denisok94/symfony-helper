@@ -17,6 +17,7 @@ use Symfony\Contracts\Translation\LocaleAwareInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Class ApiRestController
@@ -343,12 +344,13 @@ abstract class ApiRestController extends AbstractController
     /**
      * Запись в лог
      * @param Throwable $e
+     * @param string $message
      */
-    public function critical(Throwable $e): void
+    public function critical(Throwable $e, string $message = ''): void
     {
         if ($this->logger) {
             $this->logger->critical($this->textLogger(
-                sprintf("%s(%s:%s)", $e->getMessage(), $e->getFile(), $e->getLine())
+                sprintf("%s %s(%s:%s)", $message, $e->getMessage(), $e->getFile(), $e->getLine())
             ), $this->paramLogger());
         }
     }
@@ -357,7 +359,7 @@ abstract class ApiRestController extends AbstractController
      * @param string $message
      * @return string
      */
-    private function textLogger(string $message): string
+    public function textLogger(string $message): string
     {
         return sprintf("api.%s.%s: %s", $this->controllerName, $this->actionName, $this->trans($message));
     }
@@ -365,7 +367,7 @@ abstract class ApiRestController extends AbstractController
     /**
      * @return array
      */
-    private function paramLogger(): array
+    public function paramLogger(): array
     {
         return ['user' => $this->user, 'query' => $this->requestStack->query->all(), 'data' => $this->data];
     }
@@ -474,14 +476,15 @@ abstract class ApiRestController extends AbstractController
     /**
      * 500
      * @param Throwable $e
+     * @param string $message
      * @return JsonResponse
      */
-    protected function buildInternalServerError(Throwable $e): JsonResponse
+    protected function buildInternalServerError(Throwable $e, string $message = 'api.internal_server_error'): JsonResponse
     {
-        $this->critical($e);
+        $this->critical($e, $message);
         return new JsonResponse(["error" => [
             'code' => Response::HTTP_INTERNAL_SERVER_ERROR,
-            'message' => $this->trans('api.internal_server_error')
+            'message' => $this->trans($message)
         ]], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
