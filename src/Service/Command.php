@@ -16,11 +16,16 @@ use Symfony\Component\Process\Process;
  */
 class Command implements ServiceSubscriberInterface
 {
-    protected ?ContainerInterface $container;
-    protected ?LoggerInterface $logger;
-    protected ?string $dir = null;
-    protected string $php = 'php';
-    protected bool $check_versions = false;
+    /** @var ContainerInterface|null */
+    protected $container;
+    /** @var LoggerInterface|null */
+    protected $logger;
+    /** @var string|null */
+    protected $dir = null;
+    /** @var string|null */
+    protected $php = 'php';
+    /** @var bool|null */
+    protected $check_versions = false;
 
     /**
      * @param LoggerInterface|null $logger
@@ -90,7 +95,9 @@ class Command implements ServiceSubscriberInterface
                 // $log,
                 $syncStr
             ]);
-            $this->logger?->debug("exec: $exec", []);
+            if ($this->logger) {
+                $this->logger->debug("exec: $exec", []);
+            }
 
             // $process = new Process(['php', "$dir/bin/console", $command, $params, $log, $syncStr]);
             // try {
@@ -98,16 +105,20 @@ class Command implements ServiceSubscriberInterface
             //     $process->mustRun();
             //     // return $process->getOutput();
             // } catch (ProcessFailedException $exception) {
-            //     $this->logger?->error("exec: $command | error:" . $exception->getMessage(), ['params' => $params]);
+            //     if ($this->logger) $this->logger->error("exec: $command | error:" . $exception->getMessage(), ['params' => $params]);
             // }
 
             exec($exec, $output, $return_code);
             if ($return_code != 0) {
-                $this->logger?->error("$command | code: $return_code", ['params' => $params, 'output' => $output]);
+                if ($this->logger) {
+                    $this->logger->error("$command | code: $return_code", ['params' => $params, 'output' => $output]);
+                }
             }
             return $output;
         } catch (Throwable $e) {
-            $this->logger?->warning("exec: " . $e->getMessage());
+            if ($this->logger) {
+                $this->logger->warning("exec: " . $e->getMessage());
+            }
         }
     }
 
