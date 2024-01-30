@@ -128,7 +128,7 @@ abstract class ApiRestController extends AbstractController
     /**
      * @return JsonResponse|bool
      */
-    private function beforeAction(): JsonResponse|bool
+    private function beforeAction()
     {
         /** @var UserInterface $user */
         $this->user = $user = $this->getUser();
@@ -214,7 +214,7 @@ abstract class ApiRestController extends AbstractController
      * @param array $accessControl - весть массив из accessControl()
      * @return JsonResponse|bool
      */
-    public function preAccessControl(array $accessControl): JsonResponse|bool
+    public function preAccessControl(array $accessControl)
     {
         return false;
     }
@@ -224,7 +224,7 @@ abstract class ApiRestController extends AbstractController
      * @param array $item - элемент массива из accessControl()
      * @return JsonResponse|bool
      */
-    public function preAccessControlItem(array $item): JsonResponse|bool
+    public function preAccessControlItem(array $item)
     {
         return false;
     }
